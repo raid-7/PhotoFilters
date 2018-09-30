@@ -23,10 +23,10 @@ public class UIDialogs {
     imageOutputFileFilter = new FileNameExtensionFilter(filterName, imageOutputExtensions);
   }
 
-  public int closeUnsavedConfirmationDialog() {
-    return JOptionPane.showConfirmDialog(parent, UIConstants.CLOSE_UNSAVED_MESSAGE, UIConstants.CLOSE_UNSAVED_TITLE,
-        JOptionPane.YES_NO_CANCEL_OPTION);
-  }
+//  public int closeUnsavedConfirmationDialog() {
+//    return JOptionPane.showConfirmDialog(parent, UIConstants.CLOSE_UNSAVED_MESSAGE, UIConstants.CLOSE_UNSAVED_TITLE,
+//        JOptionPane.YES_NO_CANCEL_OPTION);
+//  }
 
   public void errorDialog(String errorMessage) {
     JOptionPane.showMessageDialog(parent, errorMessage, UIConstants.ERROR_TITLE, JOptionPane.ERROR_MESSAGE);

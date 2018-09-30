@@ -13,11 +13,22 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+
         <configuration>
           <source>10</source>
           <target>10</target>
         </configuration>
       </plugin>
+
+      <!--<plugin>-->
+        <!--<groupId>org.codehaus.mojo</groupId>-->
+        <!--<artifactId>exec-maven-plugin</artifactId>-->
+
+        <!--<configuration>-->
+          <!--<mainClass>raid.study.photofilters.Main</mainClass>-->
+        <!--</configuration>-->
+      <!--</plugin>-->
     </plugins>
   </build>
 

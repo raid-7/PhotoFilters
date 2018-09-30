@@ -29,14 +29,7 @@ public class Main {
 
       viewContainer.addListener(UIEventType.FILTER_SELECTED, (Consumer<String>) this::refilter);
 
-      viewContainer.addListener(UIEventType.WINDOW_CLOSING, () -> {
-        if (filteredImage != null) {
-          // TODO information can be lost
-          exit();
-        } else {
-          exit();
-        }
-      });
+      viewContainer.addListener(UIEventType.WINDOW_CLOSING, this::exit);
 
       viewContainer.addListener(UIEventType.OPEN_ACTION, () -> {
         File file = viewContainer.getDialogs().openFileDialog();
@@ -60,7 +53,6 @@ public class Main {
   }
 
   private void loadImage(File from) {
-    // TODO information can be lost
     openedImage = null;
     try {
       openedImage = ImageIO.read(from);
@@ -96,6 +88,8 @@ public class Main {
   }
 
   private void refilter(String filterId) {
+    System.out.println(filterId);
+
     if (openedImage == null)
       filteredImage = null;
     else {
@@ -103,9 +97,7 @@ public class Main {
       filteredImage = filter.transform(openedImage);
     }
 
-    scheduleUITask(() -> {
-      viewContainer.setAfterImage(filteredImage);
-    });
+    scheduleUITask(() -> viewContainer.setAfterImage(filteredImage));
   }
 
   private void scheduleUITask(Runnable runnable) {
@@ -122,9 +114,7 @@ public class Main {
 
   private void handleException(Exception exc, String problem) {
     exc.printStackTrace();
-    scheduleUITask(() -> {
-      viewContainer.getDialogs().errorDialog(problem == null ? exc.getMessage() : problem);
-    });
+    scheduleUITask(() -> viewContainer.getDialogs().errorDialog(problem == null ? exc.getMessage() : problem));
   }
 
   private void run() {
