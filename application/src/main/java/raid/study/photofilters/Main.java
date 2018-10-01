@@ -2,6 +2,7 @@ package raid.study.photofilters;
 
 import raid.study.photofilters.spi.Filter;
 import raid.study.photofilters.spi.FilterLocator;
+import raid.study.photofilters.ui.UIConstants;
 import raid.study.photofilters.ui.UIEventType;
 import raid.study.photofilters.ui.Window;
 
@@ -27,7 +28,8 @@ public class Main {
     scheduleUITask(() -> {
       viewContainer = new Window(filtersIdNameMap);
 
-      viewContainer.addListener(UIEventType.FILTER_SELECTED, (Consumer<String>) this::refilter);
+      viewContainer
+          .addListener(UIEventType.FILTER_SELECTED, (Consumer<String>) id -> scheduleHardTask(() -> refilter(id)));
 
       viewContainer.addListener(UIEventType.WINDOW_CLOSING, this::exit);
 
@@ -39,9 +41,13 @@ public class Main {
       });
 
       viewContainer.addListener(UIEventType.SAVE_ACTION, () -> {
-        File file = viewContainer.getDialogs().saveFileDialog();
-        if (file != null) {
-          scheduleHardTask(() -> saveImage(file));
+        if (filteredImage == null) {
+          viewContainer.getDialogs().errorDialog(UIConstants.NOTHING_TO_SAVE_MESSAGE);
+        } else {
+          File file = viewContainer.getDialogs().saveFileDialog();
+          if (file != null) {
+            scheduleHardTask(() -> saveImage(file));
+          }
         }
       });
     });
@@ -53,10 +59,10 @@ public class Main {
   }
 
   private void loadImage(File from) {
-    openedImage = null;
     try {
       openedImage = ImageIO.read(from);
     } catch (IOException exc) {
+      openedImage = null;
       handleException(exc);
     }
 

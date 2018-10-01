@@ -14,12 +14,16 @@ public class FilterSelectionView extends JPanel {
     String[] filterIds = idNameMap.keySet().toArray(new String[0]);
     String[] filterNames = Arrays.stream(filterIds).map(idNameMap::get).toArray(String[]::new);
 
-    System.out.println(filterNames.length);
     JList<String> selector = new JList<>(filterNames);
     selector.addListSelectionListener(event -> {
-      selectedId = filterIds[event.getFirstIndex()];
-      callback.accept(selectedId);
+      String newId = filterIds[selector.getSelectedIndex()];
+      //noinspection StringEquality
+      if (selectedId != newId) {
+        selectedId = newId;
+        callback.accept(selectedId);
+      }
     });
+    selector.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
     setLayout(new BorderLayout());
     add(selector, BorderLayout.NORTH);
